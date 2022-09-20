@@ -61,7 +61,7 @@ namespace Fitness.CMD
                 }
                 else
                 {
-                    Console.WriteLine($"Неверный формат {name}");
+                    Console.WriteLine($"Неверный формат {name}а");
                 }
             }
         }

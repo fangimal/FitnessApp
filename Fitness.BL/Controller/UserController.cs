@@ -1,5 +1,4 @@
 ﻿using Fitness.BL.Model;
-using System.ComponentModel;
 using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Fitness.BL.Controller
@@ -14,9 +13,9 @@ namespace Fitness.BL.Controller
         /// </summary>
         public List<User> Users { get; }
 
-        public User CurrentUser { get;}
+        public User CurrentUser { get; }
 
-        public bool IsNewUser { get;} = false;
+        public bool IsNewUser { get; } = false;
 
         /// <summary>
         /// Создание нового контроллера пользователя.
@@ -54,7 +53,7 @@ namespace Fitness.BL.Controller
 
             using (var fs = new FileStream("users.dat", FileMode.OpenOrCreate))
             {
-                if (formatter.Deserialize(fs) is List<User> users)
+                if (fs.Length > 0 && formatter.Deserialize(fs) is List<User> users)
                 {
                     return users;
                 }
