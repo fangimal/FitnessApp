@@ -20,12 +20,13 @@ namespace Fitness.CMD
 
             var userController = new UserController(name);
             var eatingController = new EatingController(userController.CurrentUser);
+            var exerciseController = new ExerciseController(userController.CurrentUser);
 
             if (userController.IsNewUser)
             {
                 Console.Write("Введите пол: ");
                 var gender = Console.ReadLine();
-                var bithDate = ParseDateTime();
+                var bithDate = ParseDateTime("дата рождения");
                 var weight = PardeDouble("вес");
                 var height = PardeDouble("рост");
 
@@ -33,24 +34,56 @@ namespace Fitness.CMD
             }
             Console.WriteLine(userController.CurrentUser);
 
-            Console.WriteLine("Что вы хотите сделать?");
-            Console.WriteLine("Е - ввести приём пищи");
-            var key = Console.ReadKey();
-            Console.WriteLine();
-            
-            if (key.Key == ConsoleKey.E)
+            while (true)
             {
-                var foods = EnterEating();
-                eatingController.Add(foods.Food, foods.Weight);
+                Console.WriteLine("Что вы хотите сделать?");
+                Console.WriteLine("Е - ввести приём пищи");
+                Console.WriteLine("A - ввести упражнения");
+                Console.WriteLine("Q - выход");
+                var key = Console.ReadKey();
+                Console.WriteLine();
 
-                foreach (var item in eatingController.Eating.Foods)
+                switch (key.Key)
                 {
-                    Console.WriteLine($"\t{item.Key} - {item.Value}");
+                    case ConsoleKey.E:
+                        var foods = EnterEating();
+                        eatingController.Add(foods.Food, foods.Weight);
+
+                        foreach (var item in eatingController.Eating.Foods)
+                        {
+                            Console.WriteLine($"\t{item.Key} - {item.Value}");
+                        }
+                        break;
+                    case ConsoleKey.A:
+                        var exe = EnterExercise();
+                        exerciseController.Add(exe.Activity, exe.Begin, exe.End);
+                        foreach (var item in exerciseController.Exercises)
+                        {
+                            Console.WriteLine($"{item.Activity} c {item.Start.ToShortTimeString()} до {item.Finish.ToShortTimeString()}");
+                        }
+                        break;
+                    case ConsoleKey.Q:
+                        Environment.Exit(0);
+                        break;
                 }
             }
 
             Console.ReadLine();
 
+        }
+
+        private static (DateTime Begin, DateTime End, Activity Activity) EnterExercise()
+        {
+            Console.WriteLine("Ввудите название упраженения");
+            var name = Console.ReadLine();
+
+            var energy = PardeDouble("расход энергии в минуту");
+
+            var begin = ParseDateTime("начало упражнения");
+            var end = ParseDateTime("конец упражнения");
+
+            var actuvuty = new Activity(name, energy);
+            return (begin, end, actuvuty);
         }
 
         private static (Food Food, double Weight) EnterEating()
@@ -69,12 +102,12 @@ namespace Fitness.CMD
             return (Food: product, Weight: weight);
         }
 
-        private static DateTime ParseDateTime()
+        private static DateTime ParseDateTime(string value)
         {
             DateTime bithDate;
             while (true)
             {
-                Console.Write("Введите дату рождения (dd.MM.yyyy): ");
+                Console.Write($"Введите {value} (dd.MM.yyyy): ");
 
                 if (DateTime.TryParse(Console.ReadLine(), out bithDate))
                 {
@@ -82,7 +115,7 @@ namespace Fitness.CMD
                 }
                 else
                 {
-                    Console.WriteLine("Неверный формат даты");
+                    Console.WriteLine($"Неверный формат {value}");
                 }
             }
 
