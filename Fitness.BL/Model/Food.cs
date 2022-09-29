@@ -3,32 +3,34 @@
     [Serializable]
     public class Food
     {
-        public string Name { get; }
+        public int Id { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Белки.
         /// </summary>
-        public double Proteins { get; }
+        public double Proteins { get; set; }
 
         /// <summary>
         /// Жиры.
         /// </summary>
-        public double Fats { get; }
+        public double Fats { get; set; }
 
         /// <summary>
         /// Углеводы.
         /// </summary>
-        public double Carbonhydrates { get; }
+        public double Carbonhydrates { get; set; }
 
         /// <summary>
         /// Калории за 100 грамм продукта.
         /// </summary>
-        public double Calories { get; }
+        public double Calories { get; set; }
 
-        private double CalloriesOneGramm { get { return Calories / 100.0; } }
-        private double ProteinsOneGramm { get { return Proteins / 100.0; } }
-        private double FatsOneGramm { get { return Fats / 100.0; } }
-        private double CarbonhydratesOneGramm { get { return Carbonhydrates / 100.0; } }
+        public virtual ICollection<Eating> Eatings { get; set; }
+        public Food()
+        {
+
+        }
         public Food(string name) : this(name, 0, 0, 0, 0) { }
         public Food(string name, double proteins, double fats, double carbonhydrates, double calories)
         {

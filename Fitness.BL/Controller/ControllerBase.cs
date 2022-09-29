@@ -10,18 +10,15 @@ namespace Fitness.BL.Controller
 {
     public abstract class ControllerBase
     {
-        protected IDateSaver saver = new SerializeDataSaver();
-        /// <summary>
-        /// Сохранить данные пользователя.
-        /// </summary>
-        protected void Save(string fileName, object item)
+        private readonly IDateSaver manager = new SerializableSaver();
+        protected void Save<T>(List<T> item) where T : class
         {
-            saver.Save(fileName, item);
+            manager.Save(item);
         }
 
-        protected T Load<T>(string fileName)
+        protected List<T> Load<T>() where T : class
         {
-            return saver.Load<T>(fileName);
+            return manager.Load<T>();
         }
     }
 }

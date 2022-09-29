@@ -13,10 +13,17 @@ namespace Fitness.BL.Model
     [Serializable]
     public class Gender
     {
+        public int Id { get; set; }
         /// <summary>
         /// Название.
         /// </summary>
-        public string Name { get; }
+        public string Name { get; set; }
+
+        public virtual ICollection<User> Users { get; set; }
+        public Gender()
+        {
+
+        }
 
         /// <summary>
         /// Создать новый пол.

@@ -2,28 +2,33 @@
 
 namespace Fitness.BL.Controller
 {
-    internal class SerializeDataSaver : IDateSaver
+    internal class SerializableSaver : IDateSaver
     {
-        public T Load<T>(string fileName)
+        public List<T> Load<T>() where T : class
         {
             var formatter = new BinaryFormatter();
 
+            var fileName = typeof(T).Name;
+
             using (var fs = new FileStream(fileName, FileMode.OpenOrCreate))
             {
-                if (fs.Length > 0 && formatter.Deserialize(fs) is T items)
+                if (fs.Length > 0 && formatter.Deserialize(fs) is List<T> items)
                 {
                     return items;
                 }
                 else
                 {
-                    return default(T);
+                    return new List<T>();
                 }
             }
         }
 
-        public void Save(string fileName, object item)
+
+        public void Save<T>(List<T> item) where T : class
         {
             var formatter = new BinaryFormatter();
+
+            var fileName = typeof(T).Name;
 
             using (var fs = new FileStream(fileName, FileMode.OpenOrCreate))
             {

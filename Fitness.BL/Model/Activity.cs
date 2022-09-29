@@ -9,15 +9,18 @@ namespace Fitness.BL.Model
     [Serializable]
     public class Activity
     {
-        public string Name { get;}
+        public int Id { get; set; } 
+        public string Name { get; set; }
 
-        public double CaoloriesPerMinutr { get; }
+        public virtual ICollection<Exercise> Exercises { get; set; } 
 
+        public double CaoloriesPerMinute { get; set; }
+        public Activity() { }
         public Activity(string name, double caloriesPerMinute)
         {
             //Проверка
             Name = name;
-            CaoloriesPerMinutr = caloriesPerMinute;
+            CaoloriesPerMinute = caloriesPerMinute;
         }
         public override string ToString()
         {

@@ -8,14 +8,18 @@ namespace Fitness.BL.Model
     public class User
     {
         #region Свойства.
+
+        public int Id { get; set; }
         /// <summary>
         /// Имя.
         /// </summary>
-        public string Name { get;}
+        public string Name { get; set;}
         /// <summary>
         /// Пол.
         /// </summary>
-        public Gender Gender { get; set; }
+        public virtual Gender Gender { get; set; }
+
+        public int? GenderID { get; set; }
         /// <summary>
         /// Дата рождения.
         /// </summary>
@@ -29,6 +33,9 @@ namespace Fitness.BL.Model
         /// Рост.
         /// </summary>
         public double Height { get; set; }
+
+        public virtual ICollection<Eating> Eatings { get; set; }
+        public virtual ICollection<Exercise> Exercises { get; set; }
 
         public int Age { get { return DateTime.Now.Year - BirthDate.Year; } }
         #endregion
@@ -75,6 +82,10 @@ namespace Fitness.BL.Model
             Height = height;
         }
 
+        public User()
+        {
+
+        }
         public User(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
